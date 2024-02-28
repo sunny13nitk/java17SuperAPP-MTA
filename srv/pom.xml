@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<artifactId>java17superApp-parent</artifactId>
+		<artifactId>java17superApp-parent-MTA</artifactId>
 		<groupId>com.sap.cap</groupId>
 		<version>${revision}</version>
 	</parent>
