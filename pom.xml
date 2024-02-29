@@ -5,7 +5,7 @@
 
 	<groupId>com.sap.cap</groupId>
 	<artifactId>java17superApp-parent-MTA</artifactId>
-	<version>${revision}</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>java17superApp parent MTA</name>
