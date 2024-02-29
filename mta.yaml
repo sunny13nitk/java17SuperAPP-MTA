@@ -1,0 +1,68 @@
+_schema-version: "3.1"
+ID: j17superAppMTA
+version: 1.0.0
+description: "Java Super App MTA"
+parameters:
+  enable-parallel-deployments: true
+modules:
+  - name: j17superAppMTA-srv
+    type: java
+    path: srv
+    parameters:
+      buildpack: sap_java_buildpack
+      properties:
+        JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jre.SAPMachineJRE']"
+        JBP_CONFIG_SAP_MACHINE_JRE: "{ version: 17.+ }"
+      memory: 1G
+    build-parameters:
+      builder: custom
+      commands:
+        - mvn clean install -DskipTests
+      build-result: target/*-exec.jar
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: j17xsuaa-authn
+      - name: j17hdi-hana
+      - name: srv-cloud-destService
+
+  - name: j17superAppMTA-app
+    type: approuter.nodejs
+    path: app/
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 1024M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: j17xsuaa-authn
+    provides:
+      - name: app-api
+        properties:
+          url: ${default-url}
+resources:
+  - name: j17hdi-hana
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+    type: com.sap.xs.hdi-container
+    properties:
+      hdi-container-name: ${service-name}
+  - name: j17xsuaa-authn
+    parameters:
+      path: ./xs-security.json
+      service: xsuaa
+      service-plan: application
+    type: org.cloudfoundry.managed-service
+  - name: srv-cloud-destService
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service
