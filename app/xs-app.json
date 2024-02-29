@@ -5,21 +5,21 @@
     {
       "source": "^/api",
       "target": "/api",
-      "destination": "token-destination",
+      "destination": "srv-api",
       "authenticationType": "xsuaa",
       "cacheControl": "no-cache, no-store, must-revalidate"
     },
     {
       "source": "^/app",
       "target": "/app",
-      "destination": "token-destination",
+      "destination": "srv-api",
       "authenticationType": "xsuaa",
       "cacheControl": "no-cache, no-store, must-revalidate"
     },
     {
       "source": "^/login(.*)",
       "target": "/login$1",
-      "destination": "token-destination",
+      "destination": "srv-api",
       "authenticationType": "xsuaa"
     }
   ]
