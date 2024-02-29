@@ -1,5 +1,5 @@
 _schema-version: "3.1"
-ID: j17superAppMTA
+ID: java17superApp-parent-MTA
 version: 1.0.0
 description: "Java Super App MTA"
 parameters:
