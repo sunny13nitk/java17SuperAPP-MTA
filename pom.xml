@@ -28,20 +28,7 @@
 		<module>srv</module>
 	</modules>
 
-	<profiles>
-		<profile>
-			<id>xmake-node-path</id>
-			<activation>
-				<property>
-					<name>env.XMAKE_IMPORT_APT_0</name>
-				</property>
-			</activation>
-			<properties>
-				<node.url>${env.XMAKE_IMPORT_APT_0}</node.url>
-			</properties>
-		</profile>
-    </profiles>
-
+	
 	<dependencyManagement>
 		<dependencies>
 			<!-- CDS SERVICES -->
