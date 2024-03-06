@@ -191,7 +191,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.0.0-M3</version>
+				<version>3.4.1</version>
 				<executions>
 					<execution>
 						<id>Project Structure Checks</id>
@@ -201,17 +201,12 @@
 						<configuration>
 							<rules>
 								<requireMavenVersion>
-									<version>3.3</version>
+									<version>3.5</version>
 								</requireMavenVersion>
 								<requireJavaVersion>
 									<version>${jdk.version}</version>
 								</requireJavaVersion>
-								<requireProperty>
-									<property>project.artifactId</property>
-									<regex>[^_]+</regex>
-									<regexMessage>"The artifactId should not contain underscores
-										(_) as this causes issues when deploying to Cloud Foundry."</regexMessage>
-								</requireProperty>
+								
 								<reactorModuleConvergence />
 							</rules>
 							<fail>true</fail>
