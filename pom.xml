@@ -21,12 +21,26 @@
 		<cds.install-cdsdk.version>7.6.0</cds.install-cdsdk.version>
 		<sap.cloud.security.version>3.3.4</sap.cloud.security.version>
 		<apache.httpclient.version>4.5.14</apache.httpclient.version>
-		<node.url>https://int.repositories.cloud.sap/artifactory/build-releases-apt/</node.url>
+		
 	</properties>
 
 	<modules>
 		<module>srv</module>
 	</modules>
+
+	<profiles>
+		<profile>
+			<id>xmake-node-path</id>
+			<activation>
+				<property>
+					<name>env.XMAKE_IMPORT_APT_0</name>
+				</property>
+			</activation>
+			<properties>
+				<node.url>${env.XMAKE_IMPORT_APT_0}</node.url>
+			</properties>
+		</profile>
+    </profiles>
 
 	<dependencyManagement>
 		<dependencies>

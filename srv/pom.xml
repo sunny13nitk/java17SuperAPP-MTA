@@ -4,13 +4,17 @@
 	<parent>
 		<artifactId>java17superApp-parent-MTA</artifactId>
 		<groupId>com.sap.cap</groupId>
-		<version>${revision}</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>java17superApp</artifactId>
 	<packaging>jar</packaging>
 
 	<name>java17superApp</name>
+
+	<properties>
+		<node.url>https://int.repositories.cloud.sap/artifactory/proxy-3rd-party-nodejs-dist</node.url>
+	</properties>
 
 	<!-- ACTUAL DEPENDENCIES -->
 	<dependencies>
@@ -133,6 +137,20 @@
 
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>xmake-node-path</id>
+			<activation>
+				<property>
+					<name>env.XMAKE_IMPORT_APT_0</name>
+				</property>
+			</activation>
+			<properties>
+				<node.url>${env.XMAKE_IMPORT_APT_0}</node.url>
+			</properties>
+		</profile>
+    </profiles>
+
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
@@ -170,13 +188,14 @@
 						</goals>
 					</execution>
 
+					 <!-- INSTALL NODE AND NPM -->
 					<execution>
-						<id>cds.install-node</id>
+						<id>install-node</id>
 						<goals>
 							<goal>install-node</goal>
 						</goals>
 						<configuration>
-							<skip>${cdsdk-global}</skip>
+							<downloadUrl>${node.url}</downloadUrl>
 						</configuration>
 					</execution>
 
