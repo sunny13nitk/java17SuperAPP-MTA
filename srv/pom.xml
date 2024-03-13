@@ -149,6 +149,19 @@
 				<node.url>${env.XMAKE_IMPORT_APT_0}</node.url>
 			</properties>
 		</profile>
+		<!-- A profile that uses global installation of @sap/cds-dk -->
+		<profile>
+			<id>cdsdk-global</id>
+			<activation>
+				<property>
+					<name>env.CDSDK_GLOBAL</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<properties>
+				<cdsdk-global>true</cdsdk-global>
+			</properties>
+		</profile>
     </profiles>
 
 	<build>
