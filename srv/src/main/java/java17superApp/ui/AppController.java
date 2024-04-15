@@ -44,7 +44,8 @@ public class AppController {
     @PreAuthorize("hasAuthority('TokenAdmin')")
     public String showDetails(@AuthenticationPrincipal Token token, Model model) {
         boolean validToken = false;
-        if (token != null) {
+        if (token != null) 
+        {
             validToken = true;
             Map<String, String> result = new HashMap<>();
 
@@ -57,15 +58,15 @@ public class AppController {
             result.put("given name", token.getClaimAsString(TokenClaims.GIVEN_NAME));
             result.put("email", token.getClaimAsString(TokenClaims.EMAIL));
 
-            result.put("token", token.getTokenValue());
-
-            if (XSUAA.equals(token.getService())) {
+            if (XSUAA.equals(token.getService())) 
+            {
                 result.put("(Xsuaa) subaccount id", ((AccessToken) token).getSubaccountId());
                 result.put("(Xsuaa) scopes", String.valueOf(token.getClaimAsStringList(TokenClaims.XSUAA.SCOPES)));
                 result.put("grant type", token.getClaimAsString(TokenClaims.XSUAA.GRANT_TYPE));
             }
 
             model.addAttribute("tokenDetails", result);
+            model.addAttribute("token", token.getTokenValue());
         }
         model.addAttribute("validToken", validToken);
 
