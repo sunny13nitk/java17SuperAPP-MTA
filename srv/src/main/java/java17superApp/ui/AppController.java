@@ -28,8 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/app")
 @Slf4j
 @RequiredArgsConstructor
-public class AppController
-{
+public class AppController {
     private final IF_LoggingSrv logSrv;
 
     private final IF_DestinationService desSrv;
@@ -37,20 +36,18 @@ public class AppController
     private final String desName = "BTP_SVC_INT";
 
     @GetMapping("/")
-    public String showHome()
-    {
+    public String showHome() {
         return "home";
     }
 
     @GetMapping("/token")
     @PreAuthorize("hasAuthority('TokenAdmin')")
-    public String showDetails(@AuthenticationPrincipal Token token, Model model)
-    {
+    public String showDetails(@AuthenticationPrincipal Token token, Model model) {
         boolean validToken = false;
-        if (token != null)
-        {
+        if (token != null) {
             validToken = true;
             Map<String, String> result = new HashMap<>();
+
             result.put("client id", token.getClientId());
             result.put("User Name", token.getClaimAsString(TokenClaims.USER_NAME));
             result.put("Global SAP user id", token.getClaimAsString(TokenClaims.SAP_GLOBAL_USER_ID));
@@ -60,8 +57,9 @@ public class AppController
             result.put("given name", token.getClaimAsString(TokenClaims.GIVEN_NAME));
             result.put("email", token.getClaimAsString(TokenClaims.EMAIL));
 
-            if (XSUAA.equals(token.getService()))
-            {
+            result.put("token", token.getTokenValue());
+
+            if (XSUAA.equals(token.getService())) {
                 result.put("(Xsuaa) subaccount id", ((AccessToken) token).getSubaccountId());
                 result.put("(Xsuaa) scopes", String.valueOf(token.getClaimAsStringList(TokenClaims.XSUAA.SCOPES)));
                 result.put("grant type", token.getClaimAsString(TokenClaims.XSUAA.GRANT_TYPE));
@@ -76,22 +74,17 @@ public class AppController
 
     @GetMapping("/addLog")
     @PreAuthorize("hasAuthority('HDIAccess')")
-    public String addLog(Model model)
-    {
+    public String addLog(Model model) {
         log.info("Creating Log from UI ....");
-        if (logSrv != null)
-        {
+        if (logSrv != null) {
             log.info("Logging Service Bound ......");
 
             Result result = logSrv.addLog();
-            if (result != null)
-            {
-                if (result.list().size() > 0)
-                {
+            if (result != null) {
+                if (result.list().size() > 0) {
                     log.info("# Log Successfully Inserted - " + result.rowCount());
                     Optional<Esmappmsglog> logO = result.first(Esmappmsglog.class);
-                    if (logO.isPresent())
-                    {
+                    if (logO.isPresent()) {
                         model.addAttribute("log", logO.get());
                     }
 
@@ -104,11 +97,9 @@ public class AppController
 
     @GetMapping("/readLog")
     @PreAuthorize("hasAuthority('HDIAccess')")
-    public String readLog(Model model)
-    {
+    public String readLog(Model model) {
 
-        if (logSrv != null)
-        {
+        if (logSrv != null) {
             model.addAttribute("logs", logSrv.readLogs());
         }
         return "readLogs";
@@ -116,17 +107,12 @@ public class AppController
 
     @GetMapping("/desCheck")
     @PreAuthorize("hasAuthority('DesAccess')")
-    public String checkDEstination(Model model)
-    {
+    public String checkDEstination(Model model) {
 
-        if (desSrv != null)
-        {
-            try
-            {
+        if (desSrv != null) {
+            try {
                 model.addAttribute("desProps", desSrv.getDestinationDetails4User(desName));
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 model.addAttribute("error", e.getLocalizedMessage());
             }
         }
